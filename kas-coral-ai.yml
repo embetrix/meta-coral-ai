@@ -1,0 +1,53 @@
+header:
+  version: 11
+machine: imx8mq-phanbell
+#machine: imx8mq-evk
+distro: poky
+target:
+  - edgetpu-demo-image
+repos:
+  # This repo contains the kas-coral-ai.yml file - there is no need to fetch it again.
+  # It's current revision will be used to perform the build.
+  meta-coral:
+  poky:
+    url: "https://git.yoctoproject.org/git/poky"
+    refspec: scarthgap
+    path: "layers"
+    layers:
+      meta:
+      meta-poky:
+      meta-yocto-bsp:
+  meta-openembedded:
+    url: "https://github.com/openembedded/meta-openembedded.git"
+    refspec: scarthgap
+    path: "layers/meta-openembedded"
+    layers:
+      meta-oe:
+      meta-python:
+      meta-networking:
+      meta-perl:
+      meta-python:
+      meta-multimedia:
+      meta-filesystems:
+  meta-freescale:
+    url: "https://git.yoctoproject.org/git/meta-freescale.git"
+    refspec: scarthgap
+    path: "layers/meta-freescale"
+  meta-tensorflow:
+    url: "https://git.yoctoproject.org/git/meta-tensorflow.git"
+    refspec: master
+    path: "layers/meta-tensorflow"
+local_conf_header:
+  standard: |
+    CONF_VERSION = "2"
+    INHERIT += "rm_work"
+    PACKAGE_CLASSES = "package_deb"
+    DISTRO_FEATURES += "systemd usrmerge wifi"
+    VIRTUAL-RUNTIME_init_manager = "systemd"
+    DISTRO_FEATURES_BACKFILL_CONSIDERED += "sysvinit"
+  debug-tweaks: |
+    EXTRA_IMAGE_FEATURES = "debug-tweaks"
+  sdk: |
+    SDKMACHINE = "x86_64"
+  licenses: |
+    ACCEPT_FSL_EULA = "1"
