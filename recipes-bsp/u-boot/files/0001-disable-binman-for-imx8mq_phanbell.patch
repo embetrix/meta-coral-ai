@@ -1,0 +1,25 @@
+From 602bacc46c0fd50999cb353097f50b58bc2db283 Mon Sep 17 00:00:00 2001
+From: Ayoub Zaki <ayoub.zaki@embetrix.com>
+Date: Fri, 19 Apr 2024 19:48:35 +0200
+Subject: [PATCH] disable binman for imx8mq_phanbell
+
+Signed-off-by: Ayoub Zaki <ayoub.zaki@embetrix.com>
+---
+ arch/arm/mach-imx/imx8m/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/arch/arm/mach-imx/imx8m/Kconfig b/arch/arm/mach-imx/imx8m/Kconfig
+index b124027910..9b39d8ea6f 100644
+--- a/arch/arm/mach-imx/imx8m/Kconfig
++++ b/arch/arm/mach-imx/imx8m/Kconfig
+@@ -86,7 +86,6 @@ config TARGET_IMX8MQ_EVK
+ 
+ config TARGET_IMX8MQ_PHANBELL
+ 	bool "imx8mq_phanbell"
+-	select BINMAN
+ 	select IMX8MQ
+ 	select IMX8M_LPDDR4
+ 
+-- 
+2.34.1
+

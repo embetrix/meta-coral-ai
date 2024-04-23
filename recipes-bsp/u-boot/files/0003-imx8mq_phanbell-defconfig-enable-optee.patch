@@ -1,0 +1,24 @@
+From 100a7d3c854d50b25018c6c8ecd3133179d9d40f Mon Sep 17 00:00:00 2001
+From: Ayoub Zaki <ayoub.zaki@embetrix.com>
+Date: Tue, 23 Apr 2024 20:49:16 +0200
+Subject: [PATCH 2/2] imx8mq_phanbell defconfig enable optee
+
+Signed-off-by: Ayoub Zaki <ayoub.zaki@embetrix.com>
+---
+ configs/imx8mq_phanbell_defconfig | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/configs/imx8mq_phanbell_defconfig b/configs/imx8mq_phanbell_defconfig
+index bcf48c55aa..079b0a5e42 100644
+--- a/configs/imx8mq_phanbell_defconfig
++++ b/configs/imx8mq_phanbell_defconfig
+@@ -96,3 +96,6 @@ CONFIG_SPL_POWER_I2C=y
+ CONFIG_DM_SERIAL=y
+ CONFIG_MXC_UART=y
+ CONFIG_DM_THERMAL=y
++CONFIG_OPTEE=y
++CONFIG_CMD_OPTEE_RPMB=y
++CONFIG_TEE=y
+-- 
+2.34.1
+
