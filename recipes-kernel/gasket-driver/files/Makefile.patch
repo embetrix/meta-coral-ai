@@ -1,0 +1,15 @@
+--- a/Makefile	2024-04-20 01:09:12.725512279 +0200
++++ b/Makefile	2024-04-20 01:29:40.832686551 +0200
+@@ -11,7 +11,10 @@
+ KVERSION := $(shell uname -r)
+ 
+ all:
+-	$(MAKE) -C /lib/modules/$(KVERSION)/build M=$(PWD) modules
++	$(MAKE) -C ${KERNEL_SRC}  M=$(CURDIR) modules
++
++modules_install:
++	make -C ${KERNEL_SRC} M=$(CURDIR) modules_install
+ 
+ clean:
+-	$(MAKE) -C /lib/modules/$(KVERSION)/build M=$(PWD) clean
++	$(MAKE) -C ${KERNEL_SRC}  M=$(CURDIR) clean
