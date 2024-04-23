@@ -1,7 +1,6 @@
 header:
   version: 11
 machine: imx8mq-phanbell
-#machine: imx8mq-evk
 distro: poky
 target:
   - edgetpu-demo-image
