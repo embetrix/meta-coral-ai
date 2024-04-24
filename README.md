@@ -50,7 +50,7 @@ kas-container build kas-coral-ai.yml
 
 ## Flash SD Card
 
-Flash image on a SD Card using [bmaptools](https://github.com/intel/bmap-tools):
+Flash image on a SD Card using [bmaptool](https://github.com/yoctoproject/bmaptool):
 
 
 ```
