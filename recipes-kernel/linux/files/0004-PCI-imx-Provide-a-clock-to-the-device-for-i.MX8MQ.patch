@@ -1,7 +1,7 @@
-From 0845d9b5935ad8b3d450c2dfa62631c9c1df1bea Mon Sep 17 00:00:00 2001
+From 9ecc58cede675c67f59625774ceccb85e4ab7505 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Tue, 7 Mar 2023 21:21:57 -0800
-Subject: [PATCH 4/4] PCI: imx: Provide a clock to the device for i.MX8MQ
+Subject: [PATCH] PCI: imx: Provide a clock to the device for i.MX8MQ
 
 When the internal PLL is configured as PCIe REF_CLK, we also have to
 output a clock via CLK2_P/N pin to the connector/device to provide it.
@@ -10,16 +10,16 @@ Configure 100 MHz clock as its output.
 Signed-off-by: Ryosuke Saito <rsaito@redhat.com>
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- drivers/pci/controller/dwc/pci-imx6.c | 35 +++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+ drivers/pci/controller/dwc/pci-imx6.c | 42 ++++++++++++++++++++++++++-
+ 1 file changed, 41 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index 841af6f55c7d..ac36c7035460 100644
+index 989cdd3d49c6..12a586211aac 100644
 --- a/drivers/pci/controller/dwc/pci-imx6.c
 +++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -275,6 +275,12 @@ struct imx6_pcie {
- #define IMX8MM_GPR_PCIE_POWER_OFF		BIT(17)
- #define IMX8MM_GPR_PCIE_SSC_EN			BIT(16)
+@@ -444,8 +444,18 @@ static void imx95_pcie_inti_phy(struct imx6_pcie *imx6_pcie)
+ 	}
+ }
  
 +#define IMX8MQ_ANA_PLLOUT_MONITOR_CFG_REG	0x74
 +#define IMX8MQ_ANA_PLLOUT_MONITOR_CLK_SEL_MASK	GENMASK(3, 0)
@@ -27,14 +27,28 @@ index 841af6f55c7d..ac36c7035460 100644
 +#define IMX8MQ_ANA_SCCG_PLLOUT_DIV_CFG_REG	0x7C
 +#define IMX8MQ_ANA_SCCG_SYSPLLL1_DIV_MASK	GENMASK(2, 0)
 +
- static int imx6_pcie_cz_enabled;
- static void imx6_pcie_ltssm_disable(struct device *dev);
- 
-@@ -1575,6 +1581,35 @@ static void imx6_pcie_init_phy(struct imx6_pcie *imx6_pcie)
+ static void imx6_pcie_init_phy(struct imx6_pcie *imx6_pcie)
+ {
++	struct dw_pcie *pci = imx6_pcie->pci;
++	struct device *dev = pci->dev;
++	struct device_node *node = pci->dev->of_node;	
++	bool ext_osc = of_property_read_bool(node, "ext_osc");
+ 	switch (imx6_pcie->drvdata->variant) {
+ 	case IMX8QM:
+ 	case IMX8QM_EP:
+@@ -466,13 +476,43 @@ static void imx6_pcie_init_phy(struct imx6_pcie *imx6_pcie)
+ 		break;
+ 	case IMX8MQ:
+ 	case IMX8MQ_EP:
+-		if (false) {
++		if (!ext_osc) {
+ 			/* Use the external oscillator as REF clock */
+ 			regmap_update_bits(imx6_pcie->iomuxc_gpr,
  					   imx6_pcie_grp_offset(imx6_pcie),
  					   IMX8MQ_GPR_PCIE_REF_USE_PAD,
  					   IMX8MQ_GPR_PCIE_REF_USE_PAD);
-+		} else {
+ 		}
++		else {
 +			/*
 +			 * Use the internal PLL as REF clock and also
 +			 * provide a clock to the device.
@@ -63,9 +77,10 @@ index 841af6f55c7d..ac36c7035460 100644
 +			regmap_update_bits(anatop, IMX8MQ_ANA_PLLOUT_MONITOR_CFG_REG,
 +					   IMX8MQ_ANA_PLLOUT_MONITOR_CKE,
 +					   IMX8MQ_ANA_PLLOUT_MONITOR_CKE);
- 		}
++		}
  		/*
  		 * Regarding the datasheet, the PCIE_VPH is suggested
+ 		 * to be 1.8V. If the PCIE_VPH is supplied by 3.3V, the
 -- 
-2.39.2
+2.25.1
 
