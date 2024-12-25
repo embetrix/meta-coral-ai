@@ -10,7 +10,7 @@ repos:
   meta-coral:
   poky:
     url: "https://git.yoctoproject.org/git/poky"
-    refspec: scarthgap
+    branch: scarthgap
     path: "layers"
     layers:
       meta:
@@ -18,7 +18,7 @@ repos:
       meta-yocto-bsp:
   meta-openembedded:
     url: "https://github.com/openembedded/meta-openembedded.git"
-    refspec: scarthgap
+    branch: scarthgap
     path: "layers/meta-openembedded"
     layers:
       meta-oe:
@@ -30,11 +30,11 @@ repos:
       meta-filesystems:
   meta-freescale:
     url: "https://git.yoctoproject.org/git/meta-freescale.git"
-    refspec: scarthgap
+    branch: scarthgap
     path: "layers/meta-freescale"
   meta-tensorflow:
     url: "https://git.yoctoproject.org/git/meta-tensorflow.git"
-    refspec: master
+    branch: master
     path: "layers/meta-tensorflow"
 local_conf_header:
   standard: |
