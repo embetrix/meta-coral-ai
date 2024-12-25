@@ -31,6 +31,7 @@ repos:
   meta-freescale:
     url: "https://git.yoctoproject.org/git/meta-freescale.git"
     branch: scarthgap
+    commit: 41b923e59e048b9b2942ff737a4ddac386954c62
     path: "layers/meta-freescale"
   meta-tensorflow:
     url: "https://git.yoctoproject.org/git/meta-tensorflow.git"
